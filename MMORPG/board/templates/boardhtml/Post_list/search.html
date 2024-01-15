@@ -1,0 +1,57 @@
+{% extends 'default/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Поиск постов
+{% endblock title %}
+
+{% block content %}
+<h1 align="center">Поиск поста:</h1>
+<h5 align="right">{{ time_now| date:'d-M-Y H:i' }}</h5>
+<hr>
+<h5 align="center"><i><u> Найдено постов: {{ filter.qs|length }} из {{ posts_count }}</u></i></h5>
+<br>
+
+    {% if posts %}
+
+<form method="GET">
+    {{ filter.form }}
+    <input class="btn btn-primary" type="submit" value="Найти">
+</form>
+
+<table class="table">
+    <tr>
+        <th scope="col"> Название</th>
+        <th scope="col"><p align="justify"> Дата публикации</p></th>
+        <th scope="col">Содержимое</th>
+        <th scope="col">Действия</th>
+
+    </tr>
+    {% for post in filter.qs %}#}
+    {% for post in posts %}
+    <tr class="{% cycle 'blue_tr' 'white_tr' %}">
+        <td>
+            <a href="{% url 'news:post_detail' post.pk %}">
+                {{ post.title|truncatewords:8|truncatechars:50|Censor }}
+            </a>
+        </td>
+        <td>{{ post.dateCreation| date:'d-M-Y H:i' }}</td>
+        <td>{{ post.text|truncatechars:50|Censor }}</td>
+        <td>
+            <a href="{% url 'news:post_update' post.pk %}">Редактирование</a>
+            <a href="{% url 'news:post_delete' post.pk %}">Удалить</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+        {% include 'news/parts/paginator.html' %}
+
+    {% else %}
+<h2 align="center">Новостей и статей нет!</h2>
+
+    {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% block content %}
+
+<div slass="header-bar">
+    <h1>Profile</h1>
+    <a href="{% url 'tasks' %}">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+    {% if user.profile.profile_pic %}
+    <img src="{{ profile.profile_pic.url }}" height=100 width=100><br><br>
+    {% else %}
+    <img src="{% static 'board/images/profile/user.png' %}" height="100" width="100" /><br />
+    {% endif %}
+
+<p><strong>Username:</strong> {{ page_user }}</p><br />
+<p><strong>Bio:</strong> {{ profile.bio }}</p><br />
+
+{% if user.id == profile.user.id %}
+    <a href="{% url 'edit_user_profile' profile.id %}"><button class"button">Edit</button></a>
+    {% endif %}
+</div>
+
+{% endblock content %}

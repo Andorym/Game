@@ -1,0 +1,59 @@
+{% extends 'default/default.html' %}
+
+{% block title %}
+    Объявления
+{% endblock title %}
+
+{% block content %}
+    {% if category %}
+<h5 align="center"><b>Объявления в категории `{{ category }}`:</b></h5>
+<p align="center">
+            Всего объявлений: {{ posts_count }}
+            (на странице: {{ posts|length }})
+</p>
+    {% elif author %}
+<h5 align="center"><b>Объявления автора: `{{ author }}`:</b></h5>
+<p align="center">
+            Всего объявлений: {{ posts_count }}
+            (на странице: {{ posts|length }})
+</p>
+    {% else %}
+<p align="center">
+            Всего объявлений: {{ posts_count }}
+            (на странице: {{ posts|length }})
+</p>
+<hr>
+    {% endif %}
+
+    {% if posts %}
+<table class="table">
+    {% for post in posts %}
+    <div class="p-3 w-auto blue_tr %}">
+        <div class="card"> 
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'board:post_detail' post.pk %}">
+                        {{ post.title|truncatewords:10|truncatechars:70 }}
+                    </a>
+                </h5>
+                <p class="card-text">
+
+                    {{ post.content|safe |truncatewords:40}}
+                </p>
+                <a href="{% url 'board:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Перейти ...</a>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+</table>
+
+        {% include 'parts/paginator.html' %}
+
+
+    {% else %}
+<h3 align="center">Объявлений нет!</h3>
+
+    {% endif %}
+
+{% endblock content %}
